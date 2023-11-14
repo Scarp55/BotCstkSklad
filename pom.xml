@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>BotCstkSklad</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.02</version>
     <name>BotCstkSklad</name>
     <description>BotCstkSklad</description>
     <properties>
@@ -43,6 +43,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.16.0-rc1</version>
         </dependency>
     </dependencies>
 

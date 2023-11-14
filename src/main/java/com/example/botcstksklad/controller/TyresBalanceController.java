@@ -1,23 +1,28 @@
 package com.example.botcstksklad.controller;
 
+import com.example.botcstksklad.model.Balance;
 import com.example.botcstksklad.model.TyresBalance;
+import com.example.botcstksklad.service.TyresBalanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("tyres-balance")
+@RequestMapping("cells-balance")
 public class TyresBalanceController {
 
-    public static TyresBalance tyresBalance = new TyresBalance();
+
+    public TyresBalanceService tyresBalanceService = new TyresBalanceService();
 
     @PostMapping
     public void updateTyresBalance(@RequestBody String body) {
-        tyresBalance.setTyresBalance(body);
+        tyresBalanceService.updateTyresBalance(body);
     }
 
     @GetMapping
-    public String getTyresBalance() {
-        return tyresBalance.getTyresBalance();
+    public List<TyresBalance> getTyresBalance() {
+        return Balance.tyresBalanceList;
     }
 }

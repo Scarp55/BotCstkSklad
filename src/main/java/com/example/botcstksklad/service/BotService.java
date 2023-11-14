@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.TimeUnit;
 
 
-public class ServiceBot {
+public class BotService {
     static Bot bot = new Bot();
 
     static String offset = "1";
@@ -20,24 +20,22 @@ public class ServiceBot {
         while (true) {
             HttpResponse<String> updates = httpConnection(bot.getUriGetUpdates(), bodyGetUpdates());
             if (updates.body().contains("update_id")) {
-                Chat chat = ResponseProcessing.responseProcessing(updates.body());
+                Chat chat = ResponseProcessingService.responseProcessing(updates.body());
                 offset = chat.getOffset();
-                httpConnection(bot.getUriSendMessage(), bodySendMessage(chat));
+                httpConnection(bot.getUriSendMessage(), getBodySendMessage(chat));
                 TimeUnit.SECONDS.sleep(1);
             }
         }
 
     }
 
-    private static String bodySendMessage(Chat chat) {
-        String msg = CreateSendMessage.createMessage(chat.getReceivedMessage());
-        System.out.println(msg);
-        String result = "{" +
+    private static String getBodySendMessage(Chat chat) {
+        String msg = CreateSendMessageService.createSendMessage(chat.getReceivedMessage());
+        String resultMsg = "{" +
                 "\"chat_id\":\"" + chat.getChatId() + "\"," +
                 "\"text\":\"" + msg + "\"" +
                 "}";
-        System.out.println(result);
-        return result;
+        return resultMsg;
     }
 
     private static String bodyGetUpdates() {

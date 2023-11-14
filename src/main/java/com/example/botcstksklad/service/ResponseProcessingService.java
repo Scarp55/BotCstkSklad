@@ -2,7 +2,7 @@ package com.example.botcstksklad.service;
 
 import com.example.botcstksklad.model.Chat;
 
-public class ResponseProcessing {
+public class ResponseProcessingService {
     static Chat chat = new Chat();
 
     public static Chat responseProcessing(String response) {
@@ -12,11 +12,6 @@ public class ResponseProcessing {
                 chat.setChatId(getTextOfResponse(s, "\"chat\":{\"id\":", ","));
                 chat.setReceivedMessage(getTextOfResponse(s, "\"text\":\"", "\"}"));
                 chat.setOffset(getOffsetOfResponse(s));
-            } else if (s.contains("document")) {
-                chat.setReceivedMessage("Файл загружен");
-                chat.setFileId(getTextOfResponse(s, "\"file_id\":\"", "\""));
-                chat.setOffset(getOffsetOfResponse(s));
-                FileProcessing.fileProcessing(chat);
             }
         }
         return chat;
