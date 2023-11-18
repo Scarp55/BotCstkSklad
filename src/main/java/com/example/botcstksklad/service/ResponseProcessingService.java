@@ -10,7 +10,7 @@ public class ResponseProcessingService {
         for (String s : arrayResponse) {
             if (s.contains("text")) {
                 chat.setChatId(getTextOfResponse(s, "\"chat\":{\"id\":", ","));
-                chat.setReceivedMessage(getTextOfResponse(s, "\"text\":\"", "\"}"));
+                chat.setReceivedMessage(getTextOfResponse(s, "\"text\":\"", "\""));
                 chat.setOffset(getOffsetOfResponse(s));
             }
         }

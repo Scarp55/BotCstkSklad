@@ -1,24 +1,22 @@
 package com.example.botcstksklad.model;
 
+import com.example.botcstksklad.config.BotConfig;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 @Getter
-@Setter
-@NoArgsConstructor
-@PropertySource("classpath:bot.properties")
+@AllArgsConstructor
+@Component
 public class Bot {
 
-    @Value("${bot.name}")
-    String name;
+    private BotConfig config;
 
-    @Value("${bot.token}")
-    String token;
+    public String getUriGetUpdates() {
+        return "https://api.telegram.org/bot" + config.getToken() + "/getUpdates";
+    }
 
-    final String uriGetUpdates = "https://api.telegram.org/bot" + token + "/getUpdates";
-
-    final String uriSendMessage = "https://api.telegram.org/bot" + token + "/sendMessage";
+    public String getUriSendMessage() {
+        return "https://api.telegram.org/bot" + config.getToken() + "/sendMessage";
+    }
 }

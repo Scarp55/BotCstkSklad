@@ -21,18 +21,24 @@ public class CreateSendMessageService {
             new ContainerBalanceListToStringConverter();
 
     public static String createSendMessage(String msg) {
-        return switch (msg) {
-            case "/start" -> "Start!";
-            case "time" -> {DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM HH:mm:ss");
-                yield dtf.format(Balance.updateDateTime);
-            }
-            case "help" -> "помощь";
-            case "20", "40" -> getContainerBalance(Integer.parseInt(msg));
-            default -> msg; //getTyresBalance(msg);
-        };
+        try {
+            return switch (msg) {
+                case "/start" -> "Start! yes /help";
+                case "time" -> {
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM HH:mm:ss");
+                    yield dtf.format(Balance.updateDateTime);
+                }
+                case "/help" -> "Help yes";
+                case "20", "40" -> getContainerBalance(Integer.parseInt(msg));
+                default -> getTyresBalance(msg);
+            };
+
+        } catch (NullPointerException e) {
+            return "Остатки не обновлены";
+        }
     }
 
-    private static String getTyresBalance(String msg) {
+    private static String getTyresBalance(String msg) throws NullPointerException {
         String[] searchText = msg.split(" ");
         List<TyresBalance> tyresBalanceList = Balance.tyresBalanceList;
         try {
@@ -42,14 +48,14 @@ public class CreateSendMessageService {
                         .toList();
             }
         } catch (NullPointerException e) {
-            return "Остатки шин не обновлены";
+            throw new NullPointerException();
         }
         Map<String, List<TyresBalance>> tyreBalanceMap = tyresBalanceList.stream()
                 .collect(Collectors.groupingBy(TyresBalance::getName));
         return tyresBalanceMapToStringConverter.converter(tyreBalanceMap);
     }
 
-    private static String getContainerBalance(int msg) {
+    private static String getContainerBalance(int msg) throws NullPointerException {
         List<ContainerBalance> containerBalanceList;
         try {
             containerBalanceList = Balance.containerBalanceList.stream()
@@ -57,7 +63,7 @@ public class CreateSendMessageService {
                     .sorted(Comparator.comparing(ContainerBalance::getBalance))
                     .toList();
         } catch (NullPointerException e) {
-            return "Остатки в контейнерах не обновлены";
+            throw new NullPointerException();
         }
         return containerBalanceListToStringConverter.converter(containerBalanceList);
     }

@@ -3,11 +3,10 @@ package com.example.botcstksklad;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class BotCstkSkladApplicationTests {
+@SpringBootTest(classes = BotCstkSkladApplication.class)
+public class BotCstkSkladApplicationTest {
 
     @Test
-    void contextLoads() {
+    void main() {
     }
-
 }

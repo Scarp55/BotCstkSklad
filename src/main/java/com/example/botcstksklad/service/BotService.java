@@ -2,6 +2,9 @@ package com.example.botcstksklad.service;
 
 import com.example.botcstksklad.model.Bot;
 import com.example.botcstksklad.model.Chat;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URI;
@@ -10,11 +13,17 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.TimeUnit;
 
-
+@Service
+@AllArgsConstructor
 public class BotService {
-    static Bot bot = new Bot();
 
     static String offset = "1";
+    private static Bot bot;
+
+    @Autowired
+    private BotService(Bot bot) {
+        BotService.bot = bot;
+    }
 
     public static void initializationBot() throws IOException, InterruptedException {
         while (true) {
@@ -31,11 +40,10 @@ public class BotService {
 
     private static String getBodySendMessage(Chat chat) {
         String msg = CreateSendMessageService.createSendMessage(chat.getReceivedMessage());
-        String resultMsg = "{" +
+        return "{" +
                 "\"chat_id\":\"" + chat.getChatId() + "\"," +
                 "\"text\":\"" + msg + "\"" +
                 "}";
-        return resultMsg;
     }
 
     private static String bodyGetUpdates() {
