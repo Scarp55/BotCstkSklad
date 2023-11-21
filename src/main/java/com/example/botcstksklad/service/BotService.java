@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class BotService {
 
+    public static Bot bot;
     static String offset = "1";
-    private static Bot bot;
 
     @Autowired
     private BotService(Bot bot) {

@@ -15,4 +15,7 @@ public class BotConfig {
 
     @Value("${bot.token}")
     String token;
+
+    String textHello = "Привет. Это складской бот компании ЦСТК. " +
+            "Я умею показывать остатки шин по ячейкам хранения и контейнерах.";
 }

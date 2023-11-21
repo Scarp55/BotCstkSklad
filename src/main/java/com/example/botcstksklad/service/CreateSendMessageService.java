@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.example.botcstksklad.service.BotService.bot;
+
 public class CreateSendMessageService {
 
     public static TyresBalanceMapToStringConverter tyresBalanceMapToStringConverter =
@@ -23,7 +25,7 @@ public class CreateSendMessageService {
     public static String createSendMessage(String msg) {
         try {
             return switch (msg) {
-                case "/start" -> "Start! yes /help";
+                case "/start" -> bot.getConfig().getTextHello();
                 case "time" -> {
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM HH:mm:ss");
                     yield dtf.format(Balance.updateDateTime);
@@ -59,7 +61,7 @@ public class CreateSendMessageService {
         List<ContainerBalance> containerBalanceList;
         try {
             containerBalanceList = Balance.containerBalanceList.stream()
-                    .filter(e -> e.getSector() / 10 == 70 + msg / 10 && e.getBalance() <= 200)
+                    .filter(e -> e.getSector() / 10 == 70 + msg / 10)
                     .sorted(Comparator.comparing(ContainerBalance::getBalance))
                     .toList();
         } catch (NullPointerException e) {
