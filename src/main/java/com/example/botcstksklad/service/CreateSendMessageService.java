@@ -61,8 +61,8 @@ public class CreateSendMessageService {
         List<ContainerBalance> containerBalanceList;
         try {
             containerBalanceList = Balance.containerBalanceList.stream()
-                    .filter(e -> e.getSector() / 10 == 70 + msg / 10)
-                    .sorted(Comparator.comparing(ContainerBalance::getBalance))
+                    .filter(e -> e.getSector() / 10 == 70 + msg / 10 && e.getBalance() <= 200)
+                    .sorted(Comparator.comparing(ContainerBalance::getBalance).reversed())
                     .toList();
         } catch (NullPointerException e) {
             throw new NullPointerException();
