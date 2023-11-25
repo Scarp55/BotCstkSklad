@@ -29,4 +29,8 @@ public class TyresBalance {
     public String toString() {
         return cells + "_" + sector + "  " + balance;
     }
+
+    public String toCellsString() {
+        return name + "  " + balance + "\n";
+    }
 }

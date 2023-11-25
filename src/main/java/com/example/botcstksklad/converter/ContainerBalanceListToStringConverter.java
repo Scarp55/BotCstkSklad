@@ -1,9 +1,11 @@
 package com.example.botcstksklad.converter;
 
 import com.example.botcstksklad.model.ContainerBalance;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class ContainerBalanceListToStringConverter {
 
     public String converter(List<ContainerBalance> containerBalanceList) {

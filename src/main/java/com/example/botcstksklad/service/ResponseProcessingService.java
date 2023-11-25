@@ -1,7 +1,10 @@
 package com.example.botcstksklad.service;
 
 import com.example.botcstksklad.model.Chat;
+import org.springframework.stereotype.Service;
 
+
+@Service
 public class ResponseProcessingService {
     static Chat chat = new Chat();
 

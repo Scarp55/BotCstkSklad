@@ -1,10 +1,12 @@
 package com.example.botcstksklad.converter;
 
 import com.example.botcstksklad.model.TyresBalance;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class TyresBalanceMapToStringConverter {
 
     public String converter(Map<String, List<TyresBalance>> tyreBalanceMap) {
