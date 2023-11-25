@@ -1,33 +1,28 @@
 package com.example.botcstksklad.service;
 
-import com.example.botcstksklad.model.Chat;
+import com.example.botcstksklad.model.body.Body;
+import com.example.botcstksklad.model.body.Result;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
 public class ResponseProcessingService {
-    static Chat chat = new Chat();
 
-    public static Chat responseProcessing(String response) {
-        String[] arrayResponse = response.split("\"update_id\":");
-        for (String s : arrayResponse) {
-            if (s.contains("text")) {
-                chat.setChatId(getTextOfResponse(s, "\"chat\":{\"id\":", ","));
-                chat.setReceivedMessage(getTextOfResponse(s, "\"text\":\"", "\""));
-                chat.setOffset(getOffsetOfResponse(s));
-            }
+    static Body body = new Body();
+
+    public static List<Result> responseProcessing(String response) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            body = mapper.readValue(response, new TypeReference<>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-        return chat;
-    }
-
-    private static String getOffsetOfResponse(String s) {
-        int nextUpdateId = Integer.parseInt(s.substring(0, s.indexOf(","))) + 1;
-        return String.valueOf(nextUpdateId);
-    }
-
-    public static String getTextOfResponse(String s, String strSearchFist, String strSearchEnd) {
-        int indexStart = s.indexOf(strSearchFist) + strSearchFist.length();
-        int indexEnd = s.indexOf(strSearchEnd, indexStart);
-        return s.substring(indexStart, indexEnd);
+        return body.getResult();
     }
 }

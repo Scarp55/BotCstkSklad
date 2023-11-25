@@ -1,7 +1,7 @@
 package com.example.botcstksklad.service;
 
 import com.example.botcstksklad.model.Bot;
-import com.example.botcstksklad.model.Chat;
+import com.example.botcstksklad.model.body.Result;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class BotService {
 
     public static Bot bot;
-    static String offset = "1";
+    static Integer offset = 1;
 
     @Autowired
     private BotService(Bot bot) {
@@ -28,20 +29,20 @@ public class BotService {
     public static void initializationBot() throws IOException, InterruptedException {
         while (true) {
             HttpResponse<String> updates = httpConnection(bot.getUriGetUpdates(), bodyGetUpdates());
-            if (updates.body().contains("update_id")) {
-                Chat chat = ResponseProcessingService.responseProcessing(updates.body());
-                offset = chat.getOffset();
-                httpConnection(bot.getUriSendMessage(), getBodySendMessage(chat));
-                TimeUnit.SECONDS.sleep(1);
+            List<Result> results = ResponseProcessingService.responseProcessing(updates.body());
+            for (Result result : results) {
+                offset = result.getUpdateId() + 1;
+                httpConnection(bot.getUriSendMessage(), getBodySendMessage(result));
             }
+            TimeUnit.SECONDS.sleep(1);
         }
 
     }
 
-    private static String getBodySendMessage(Chat chat) {
-        String msg = CreateSendMessageService.createSendMessage(chat.getReceivedMessage());
+    private static String getBodySendMessage(Result result) {
+        String msg = CreateSendMessageService.createSendMessage(result.getMessage().getText());
         return "{" +
-                "\"chat_id\":\"" + chat.getChatId() + "\"," +
+                "\"chat_id\":\"" + result.getMessage().getChat().getId() + "\"," +
                 "\"text\":\"" + msg + "\"" +
                 "}";
     }

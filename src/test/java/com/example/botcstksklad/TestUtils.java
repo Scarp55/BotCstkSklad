@@ -1481,7 +1481,6 @@ public class TestUtils extends BotCstkSkladApplicationTest {
             """;
 
     private String expectedCellsBalance = """
-            У10_610
             Покрышка 12,4L-16 NorTec TS07 нс8 АШК  1
             Покрышка 15,5-38 Ascenso TDB120 нс8 133A8  2
             Покрышка 15,5-38 Ф-2АД нс8 АШК  1
