@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class Chat {
 
     @JsonProperty("id")
-    Integer id;
+    Long id;
 }
